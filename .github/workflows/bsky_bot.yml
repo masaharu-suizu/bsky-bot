@@ -2,7 +2,7 @@ name: Bluesky bot
 
 on:
   schedule:
-    - cron: '* * * * *'     # 毎時実行（UTC）
+    - cron: '0 * * * *'     # 毎時実行（UTC）
   workflow_dispatch:        # 手動実行も可能
 
 jobs:
@@ -17,7 +17,6 @@ jobs:
       - name: Install uv
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
       # Setup dependencies
       - name: Sync dependencies

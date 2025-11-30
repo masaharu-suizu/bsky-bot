@@ -7,7 +7,7 @@ def main():
 
     client = Client()
     client.login(handle, app_password)
-    client.send_post("(これはPython SDKを使ったbotです。)\nHello world!")
+    client.send_post("(これはbotです。)\nHello world!")
 
 if __name__ == "__main__":
     main()
