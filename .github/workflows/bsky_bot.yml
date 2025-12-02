@@ -2,7 +2,7 @@ name: Bluesky bot
 
 on:
   schedule:
-    - cron: '0 3 * * *'     # 毎時実行（UTC）
+    - cron: '0 3 * * *'     # 定時実行（UTC）
   workflow_dispatch:        # 手動実行も可能
 
 jobs:
@@ -13,17 +13,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Install uv
       - name: Install uv
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      # Setup dependencies
-      - name: Sync dependencies
+      - name: Setup dependencies
         run: uv sync
 
-      # Run python script to change notifications status
-      - name: Post message to Bluesky
+      - name: Run python script for Bluesky bot
         env:
           BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
           BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
