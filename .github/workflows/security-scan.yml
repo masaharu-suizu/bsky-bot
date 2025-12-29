@@ -23,7 +23,7 @@ jobs:
           version: "latest"
 
       - name: Generate SBOM with uv
-        run: uv export --format cyclonedx --output-file sbom.json --no-dev --locked
+        run: uv export --format cyclonedx1.5 --output-file sbom.json --no-dev --locked
 
       - name: Scan SBOM with Grype
         uses: anchore/scan-action@v7
@@ -36,5 +36,5 @@ jobs:
         if: failure()
         run: |
           curl -H "Content-Type: application/json" \
-               -d '{"username": "Security Bot", "content": "⚠️ **脆弱性が検出されました**\nGitHub Actionsを確認してください: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
+               -d '{"username": "Failure", "content": "⚠️ **GitHub Actionsが失敗しました。**\n内容を確認してください: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
                ${{ secrets.DISCORD_WEBHOOK }}
