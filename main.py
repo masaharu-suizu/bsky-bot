@@ -1,33 +1,40 @@
-from atproto import Client
-import datetime
 import os
 
-def emoji():
-    day_of_week = datetime.date.today().weekday()
+from atproto import Client
 
-    if day_of_week == 0:    # Monday
-        return "🍛"
-    elif day_of_week == 1:  # Tuesday
-        return "🍜"
-    elif day_of_week == 2:  # Wednesday
-        return "🍣"
-    elif day_of_week == 3:  # Thursday
-        return "🍔"
-    elif day_of_week == 4:  # Friday
-        return "🍕"
-    elif day_of_week == 5:  # Saturday
-        return "🌭"
-    elif day_of_week == 6:  # Sunday
-        return "🍱"
+from bots.holiday        import Holiday
+from bots.lunch          import Lunch
+from bots.premium_friday import PremiumFriday
 
 
-def main():
-    handle = os.environ["BSKY_HANDLE"]
-    app_password = os.environ["BSKY_APP_PASSWORD"]
-
+def main() -> None:
     client = Client()
-    client.login(handle, app_password)
-    client.send_post("(Botです) 今日のランチは何を食おうかなー" + emoji())
+    client.login(
+        os.environ["BSKY_HANDLE"],
+        os.environ["BSKY_APP_PASSWORD"],
+    )
+
+    bot     = Holiday()
+    message = bot.build_message()
+    if message:
+        client.send_post(message)
+    else:
+        print("No message to post today.")
+
+    bot     = Lunch()
+    message = bot.build_message()
+    if message:
+        client.send_post(message)
+    else:
+        print("No message to post today.")
+
+    bot     = PremiumFriday()
+    message = bot.build_message()
+    if message:
+        client.send_post(message)
+    else:
+        print("No message to post today.")
+
 
 if __name__ == "__main__":
     main()
