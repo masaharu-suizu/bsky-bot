@@ -2,8 +2,8 @@ name: Bluesky bot
 
 on:
   schedule:
-    - cron: '0 3 * * *'     # 定時実行（UTC）
-  workflow_dispatch:        # 手動実行も可能
+    - cron: '0 3 * * *'
+  workflow_dispatch:
 
 jobs:
   generate:
@@ -11,14 +11,15 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install uv
-        run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "latest"
 
       - name: Setup dependencies
-        run: uv sync
+        run: uv sync --locked
 
       - name: Run python script for Bluesky bot
         env:
